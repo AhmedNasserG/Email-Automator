@@ -4,8 +4,9 @@ import smtplib
 
 
 from rich.prompt import Confirm
-
-
+from rich import print
+from rich.console import Console
+console = Console()
 
 def get_credenalties():
     ''' get login credenalties '''
@@ -24,6 +25,21 @@ def get_credenalties():
     return sender_email, password
 
 
+def get_mail_content():
+    SUPPORTED_EXTENTSION = ["txt","html"]
+    while True:
+        path = input("Enter Email Body File Name :")
+        extentsion = path.split(".")[-1]
+        if not os.path.isfile(path):
+            console.print("Sorry, File Does Not Exist, Try Again", style="bold red")
+        elif not extentsion in SUPPORTED_EXTENTSION:
+            console.print("Sorry, File Is Not Supported, Try Again", style="bold red")
+        else:
+            break
+    with open(path, "r") as f:
+        print(f.read())
+
+
 def send_mail(receiver_emails, email_content):
     ''' send a mail to a group of emails '''
     sender_email, password = get_credenalties()
@@ -36,6 +52,7 @@ def send_mail(receiver_emails, email_content):
 
 
 # test
-receiver_emails, email = ["ahmednasser21731@yahoo.com", "ahmednasser217217@gmail.com"], "This is a test from python script"
-send_mail(receiver_emails, email)
-print("done")
+# receiver_emails, email = ["ahmednasser21731@yahoo.com", "ahmednasser217217@gmail.com"], "This is a test from python script"
+# send_mail(receiver_emails, email)
+# print("done")
+get_mail_content()
