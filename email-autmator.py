@@ -1,15 +1,34 @@
 import os
 import getpass
+import sys
+
 import smtplib 
 # from email import encoders
 # from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from PyInquirer import prompt
+
 from rich.prompt import Confirm
 from rich import print
 from rich.console import Console
+from rich.panel import Panel
+
 console = Console()
+
+def showMenu(title, options):
+    questions = {
+                'type': 'list',
+                'name': 'theme',
+                'message': title,
+                'choices': options
+    }
+    while (True):
+        terminal_menu = prompt(questions)
+        if len(list(terminal_menu.values())) != 0:
+            break
+    return list(terminal_menu.values())[0]
 
 def get_credenalties():
     ''' get login credenalties '''
@@ -30,17 +49,16 @@ def get_credenalties():
 
 def get_mail_content():
     SUPPORTED_EXTENTSION = {"txt" : "plain","html" :"html"}
-    onlyfiles = [f for f in os.listdir() if f.split(".")[-1] in SUPPORTED_EXTENTSION.keys()]
-    # while True:
-    #     path = input("Enter Email Body File Name :")
-    #     extentsion = path.split(".")[-1]
-    #     if not os.path.isfile(path):
-    #         console.print("Sorry, File Does Not Exist, Try Again", style="bold red")
-    #     elif not extentsion in SUPPORTED_EXTENTSION.keys():
-    #         console.print("Sorry, File Is Not Supported, Try Again", style="bold red")
-    #     else:
-    #         break
-    with open(path, "r") as f:
+    supported_files = [f for f in os.listdir() if f.split(".")[-1] in SUPPORTED_EXTENTSION.keys()]
+    if len(supported_files) == 0:
+        console.print(Panel(f'''[red]Sorry, There are not any Supported Files in Email-Autmator Directory [/red]
+We support {str(list(SUPPORTED_EXTENTSION.keys()))[1:-1]}.
+If you need other types add an issue on Github: https://github.com/AhmedNasserG and we will add them ASAP
+Please Add One And Try Again''', style="bold"))
+        sys.exit()
+    file = showMenu("Select Email Body File :", supported_files)
+    extentsion = file.split(".")[-1]
+    with open(file, "r") as f:
         message = MIMEMultipart()
         message.attach(MIMEText(f.read(), SUPPORTED_EXTENTSION[extentsion]))
     return message
@@ -57,11 +75,7 @@ def send_mail(receiver_emails, message):
 
 
 # test
-# receiver_emails, email = ["ahmednasser21731@yahoo.com"], get_mail_content()
-# send_mail(receiver_emails, email)
+receiver_emails, email = ["ahmednasser21731@yahoo.com"], get_mail_content()
+send_mail(receiver_emails, email)
 # print("done")
 # get_mail_content()
-
-SUPPORTED_EXTENTSION = {"txt" : "plain","html" :"html"}
-onlyfiles = [f for f in os.listdir() if f.split(".")[-1] in SUPPORTED_EXTENTSION.keys()]
-print(onlyfiles)
