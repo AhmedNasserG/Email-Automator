@@ -30,15 +30,16 @@ def get_credenalties():
 
 def get_mail_content():
     SUPPORTED_EXTENTSION = {"txt" : "plain","html" :"html"}
-    while True:
-        path = input("Enter Email Body File Name :")
-        extentsion = path.split(".")[-1]
-        if not os.path.isfile(path):
-            console.print("Sorry, File Does Not Exist, Try Again", style="bold red")
-        elif not extentsion in SUPPORTED_EXTENTSION.keys():
-            console.print("Sorry, File Is Not Supported, Try Again", style="bold red")
-        else:
-            break
+    onlyfiles = [f for f in os.listdir() if f.split(".")[-1] in SUPPORTED_EXTENTSION.keys()]
+    # while True:
+    #     path = input("Enter Email Body File Name :")
+    #     extentsion = path.split(".")[-1]
+    #     if not os.path.isfile(path):
+    #         console.print("Sorry, File Does Not Exist, Try Again", style="bold red")
+    #     elif not extentsion in SUPPORTED_EXTENTSION.keys():
+    #         console.print("Sorry, File Is Not Supported, Try Again", style="bold red")
+    #     else:
+    #         break
     with open(path, "r") as f:
         message = MIMEMultipart()
         message.attach(MIMEText(f.read(), SUPPORTED_EXTENTSION[extentsion]))
@@ -56,7 +57,11 @@ def send_mail(receiver_emails, message):
 
 
 # test
-receiver_emails, email = ["ahmednasser21731@yahoo.com"], get_mail_content()
-send_mail(receiver_emails, email)
+# receiver_emails, email = ["ahmednasser21731@yahoo.com"], get_mail_content()
+# send_mail(receiver_emails, email)
 # print("done")
 # get_mail_content()
+
+SUPPORTED_EXTENTSION = {"txt" : "plain","html" :"html"}
+onlyfiles = [f for f in os.listdir() if f.split(".")[-1] in SUPPORTED_EXTENTSION.keys()]
+print(onlyfiles)
