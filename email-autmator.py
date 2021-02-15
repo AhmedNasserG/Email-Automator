@@ -96,6 +96,25 @@ def add_emails(receiver_emails):
     receiver_emails += user_input.split()
     console.print(f"Successfully added {len(user_input.split())} Emails, Total Number of Emails is {len(receiver_emails)}", style="bold green")
 
+def get_receiver_emails_manual():
+    receiver_emails = []
+    add_emails(receiver_emails)
+    while True:
+        mod = Prompt.ask(f"There are [bold blue]{len(receiver_emails)}[/bold blue] Emails Added, Want to :",
+            choices=["submit", "preview", "edit", "delete", "add"], default="submit")
+        if mod == "preview":
+            preview_emails(receiver_emails)
+        elif mod == "edit":
+            edit_emails(receiver_emails)
+        elif mod == "delete":
+            delete_emails(receiver_emails)
+        elif mod == "add":
+            add_emails(receiver_emails)
+        elif mod == "submit":
+            break
+    return receiver_emails
+
+
 
 def send_mail(receiver_emails, message):
     ''' send a mail to a group of emails '''
@@ -113,5 +132,5 @@ def send_mail(receiver_emails, message):
 # send_mail(receiver_emails, email)
 # print("done")
 # get_mail_content()
-# get_receiver_emails_manual()
+get_receiver_emails_manual()
 # print(show_checklist("test", ["op1","op2","op3","op4"]))
