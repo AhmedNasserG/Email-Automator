@@ -1,6 +1,7 @@
 import os
 import getpass
 import sys
+# import csv
 
 import smtplib 
 # from email import encoders
@@ -17,6 +18,8 @@ from rich.panel import Panel
 
 # TODO: Fix can't close the script when the menu is shown
 # TODO: Add Auth method
+# TODO: Add get_receiver_emails_cvs method
+# TODO: Add get_receiver_emails_txt method
 
 console = Console()
 
@@ -96,9 +99,7 @@ def add_emails(receiver_emails):
     receiver_emails += user_input.split()
     console.print(f"Successfully added {len(user_input.split())} Emails, Total Number of Emails is {len(receiver_emails)}", style="bold green")
 
-def get_receiver_emails_manual():
-    receiver_emails = []
-    add_emails(receiver_emails)
+def preprocess_emails(receiver_emails):
     while True:
         mod = Prompt.ask(f"There are [bold blue]{len(receiver_emails)}[/bold blue] Emails Added, Want to :",
             choices=["submit", "preview", "edit", "delete", "add"], default="submit")
@@ -112,6 +113,11 @@ def get_receiver_emails_manual():
             add_emails(receiver_emails)
         elif mod == "submit":
             break
+
+def get_receiver_emails_manual():
+    receiver_emails = []
+    add_emails(receiver_emails)
+    preprocess_emails(receiver_emails)
     return receiver_emails
 
 
