@@ -91,6 +91,11 @@ def delete_emails(receiver_emails):
     selected_emails = show_checklist("Select Emails to Delete", receiver_emails)
     receiver_emails[:] = [email for i, email in enumerate(receiver_emails) if i not in selected_emails]
 
+def add_emails(receiver_emails):
+    user_input = Prompt.ask("Write Receiver Emails Seperated with spaces ")
+    receiver_emails += user_input.split()
+    console.print(f"Successfully added {len(user_input.split())} Emails, Total Number of Emails is {len(receiver_emails)}", style="bold green")
+
 
 def send_mail(receiver_emails, message):
     ''' send a mail to a group of emails '''
