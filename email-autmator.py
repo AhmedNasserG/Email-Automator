@@ -121,6 +121,15 @@ def get_receiver_emails_manual():
     return receiver_emails
 
 
+def get_receiver_emails_txt():
+    receiver_emails = []
+    txt_files = [f for f in os.listdir() if f.split(".")[-1] == "txt"]
+    file = showMenu("Select txt File :", txt_files)
+    with open(file, mode="r") as txt_file:
+        receiver_emails = txt_file.read().split()
+    preprocess_emails(receiver_emails)
+    return receiver_emails
+
 
 def send_mail(receiver_emails, message):
     ''' send a mail to a group of emails '''
@@ -138,5 +147,6 @@ def send_mail(receiver_emails, message):
 # send_mail(receiver_emails, email)
 # print("done")
 # get_mail_content()
-get_receiver_emails_manual()
+# get_receiver_emails_manual()
+# get_receiver_emails()
 # print(show_checklist("test", ["op1","op2","op3","op4"]))
