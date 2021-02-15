@@ -87,6 +87,9 @@ def edit_emails(receiver_emails):
     for i in selected_emails:
         receiver_emails[i] = Prompt.ask(f"Edit [bold blue]{receiver_emails[i]}[/bold blue] to ")
 
+def delete_emails(receiver_emails):
+    selected_emails = show_checklist("Select Emails to Delete", receiver_emails)
+    receiver_emails[:] = [email for i, email in enumerate(receiver_emails) if i not in selected_emails]
 
 
 def send_mail(receiver_emails, message):
