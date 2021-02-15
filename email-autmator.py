@@ -61,7 +61,6 @@ def get_credenalties():
             password = lines[1].strip()
     return sender_email, password
 
-
 def get_mail_content():
     SUPPORTED_EXTENTSION = {"txt" : "plain","html" :"html"}
     supported_files = [f for f in os.listdir() if f.split(".")[-1] in SUPPORTED_EXTENTSION.keys()]
@@ -82,6 +81,11 @@ def preview_emails(receiver_emails):
     console.print(f"There are {len(receiver_emails)} Added Receiver Emails", style="bold yellow")
     for i, email in enumerate(receiver_emails):
         console.print(f"([bold magenta]{i+1}[/bold magenta]) {email}")
+
+def edit_emails(receiver_emails):
+    selected_emails = show_checklist("Select Emails to Edit", receiver_emails)
+    for i in selected_emails:
+        receiver_emails[i] = Prompt.ask(f"Edit [bold blue]{receiver_emails[i]}[/bold blue] to ")
 
 
 
