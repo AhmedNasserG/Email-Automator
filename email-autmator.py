@@ -78,6 +78,11 @@ Please Add One And Try Again''', style="bold"))
         message.attach(MIMEText(f.read(), SUPPORTED_EXTENTSION[extentsion]))
     return message
 
+def preview_emails(receiver_emails):
+    console.print(f"There are {len(receiver_emails)} Added Receiver Emails", style="bold yellow")
+    for i, email in enumerate(receiver_emails):
+        console.print(f"([bold magenta]{i+1}[/bold magenta]) {email}")
+
 
 
 def send_mail(receiver_emails, message):
@@ -97,4 +102,4 @@ def send_mail(receiver_emails, message):
 # print("done")
 # get_mail_content()
 # get_receiver_emails_manual()
-# show_checklist("test", ["op1","op2","op3","op4"])
+# print(show_checklist("test", ["op1","op2","op3","op4"]))
