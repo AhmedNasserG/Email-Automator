@@ -1,7 +1,7 @@
 import os
 import getpass
 import sys
-# import csv
+import csv
 
 import smtplib 
 # from email import encoders
@@ -129,6 +129,20 @@ def get_receiver_emails_txt():
         receiver_emails = txt_file.read().split()
     preprocess_emails(receiver_emails)
     return receiver_emails
+
+
+def get_receiver_emails_cvs():
+    receiver_emails = []
+    cvs_files = [f for f in os.listdir() if f.split(".")[-1] == "csv"]
+    file = showMenu("Select Email Body File :", cvs_files)
+    with open(file, mode='r') as csv_file:
+        key = Prompt.ask("Enter emails column title ")
+        csv_reader = csv.DictReader(csv_file)
+        for line in csv_reader:
+            receiver_emails.append(line[key])
+        preprocess_emails(receiver_emails)
+    return receiver_emails
+
 
 
 def send_mail(receiver_emails, message):
