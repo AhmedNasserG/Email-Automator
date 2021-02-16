@@ -143,6 +143,15 @@ def get_receiver_emails_cvs():
         preprocess_emails(receiver_emails)
     return receiver_emails
 
+def get_receiver_emails():
+    mod = Prompt.ask("Way of Entering Receiver E-mails :", choices=["manual", "csv", "txt"], default="manual")
+    if mod == "manual":
+        receiver_emails = get_receiver_emails_manual()
+    elif mod == "csv":
+        receiver_emails = get_receiver_emails_cvs()
+    elif mod == "txt":
+        receiver_emails = get_receiver_emails_txt()
+    return receiver_emails
 
 
 def send_mail(receiver_emails, message):
@@ -162,5 +171,5 @@ def send_mail(receiver_emails, message):
 # print("done")
 # get_mail_content()
 # get_receiver_emails_manual()
-# get_receiver_emails()
+get_receiver_emails()
 # print(show_checklist("test", ["op1","op2","op3","op4"]))
