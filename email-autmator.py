@@ -18,8 +18,8 @@ from rich.panel import Panel
 
 # TODO: Fix can't close the script when the menu is shown
 # TODO: Add Auth method
-# TODO: Add get_receiver_emails_cvs method
-# TODO: Add get_receiver_emails_txt method
+# TODO: handel empty menu , add select file method
+
 
 console = Console()
 
@@ -120,21 +120,15 @@ def get_receiver_emails_manual():
     preprocess_emails(receiver_emails)
     return receiver_emails
 
-
-def get_receiver_emails_txt():
+def get_receiver_emails_txt(file):
     receiver_emails = []
-    txt_files = [f for f in os.listdir() if f.split(".")[-1] == "txt"]
-    file = showMenu("Select txt File :", txt_files)
     with open(file, mode="r") as txt_file:
         receiver_emails = txt_file.read().split()
     preprocess_emails(receiver_emails)
     return receiver_emails
 
-
-def get_receiver_emails_cvs():
+def get_receiver_emails_csv(file):
     receiver_emails = []
-    cvs_files = [f for f in os.listdir() if f.split(".")[-1] == "csv"]
-    file = showMenu("Select Email Body File :", cvs_files)
     with open(file, mode='r') as csv_file:
         key = Prompt.ask("Enter emails column title ")
         csv_reader = csv.DictReader(csv_file)
@@ -143,16 +137,30 @@ def get_receiver_emails_cvs():
         preprocess_emails(receiver_emails)
     return receiver_emails
 
-def get_receiver_emails():
-    mod = Prompt.ask("Way of Entering Receiver E-mails :", choices=["manual", "csv", "txt"], default="manual")
-    if mod == "manual":
-        receiver_emails = get_receiver_emails_manual()
-    elif mod == "csv":
-        receiver_emails = get_receiver_emails_cvs()
-    elif mod == "txt":
-        receiver_emails = get_receiver_emails_txt()
+def get_receiver_emails_file():
+    receiver_emails = []
+    SUPPORTED_EXTENTSION = ["txt","csv"]
+    supported_files = [f for f in os.listdir() if f.split(".")[-1] in SUPPORTED_EXTENTSION]
+    if len(supported_files) == 0:
+        console.print(Panel(f'''[red]Sorry, There are not any Supported Files in Current Directory [/red]
+We support {str(SUPPORTED_EXTENTSION)[1:-1]}.
+If you need other types add an issue on Github: https://github.com/AhmedNasserG and we will add them ASAP
+Please Add One And Try Again''', style="bold"))
+        sys.exit()
+    file = showMenu("Select Email Body File :", supported_files)
+    if file.split(".")[-1] == "txt":
+        get_receiver_emails_txt(file)
+    elif file.split(".")[-1] == "csv":
+        get_receiver_emails_csv(file)
     return receiver_emails
 
+def get_receiver_emails():
+    mod = Prompt.ask("Way of Entering Receiver E-mails :", choices=["manual", "file"], default="manual")
+    if mod == "manual":
+        receiver_emails = get_receiver_emails_manual()
+    elif mod == "file":
+        receiver_emails = get_receiver_emails_file()
+    return receiver_emails
 
 def send_mail(receiver_emails, message):
     ''' send a mail to a group of emails '''
@@ -166,7 +174,7 @@ def send_mail(receiver_emails, message):
 
 
 # test
-# receiver_emails, email = ["ahmednasser21731@yahoo.com"], get_mail_content()
+# receiver_emails, email = get_receiver_emails(), get_mail_content()
 # send_mail(receiver_emails, email)
 # print("done")
 # get_mail_content()
