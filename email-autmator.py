@@ -16,9 +16,15 @@ from rich import print
 from rich.console import Console
 from rich.panel import Panel
 
-# TODO: Fix can't close the script when the menu is shown
+# TODO: Update add emails method to add from file or manually (merge between them)
+# TODO: Add bye method
+# TODO: Add ctrl-c 
 # TODO: Add Auth method
-# TODO: handel empty menu , add select file method
+# TODO: Add Customizable emails
+# TODO: Handle if the file contains bad emails
+# TODO: Handle if the file contains duplicated emails
+# TODO: Add other emailing services rather than gmail
+# TODO: Fix can't close the script when the menu is shown
 
 
 console = Console()
@@ -63,6 +69,16 @@ def get_credenalties():
             sender_email = lines[0].strip()
             password = lines[1].strip()
     return sender_email, password
+
+def bye():
+    console.print(Panel.fit('''[bold red]Thank YOU [/bold red][bold]for using Email Automater 
+
+If you enjoy it, feel free to leave a [/bold][bold red]Star[/bold red]
+
+[italic bold yellow]https://github.com/AhmedNasserG/[/italic bold yellow]
+
+[italic cyan] Feedback and contribution is welcome as well :smiley:![/italic cyan]
+        ''', title="Bye!"), justify="center")
 
 def get_mail_content():
     SUPPORTED_EXTENTSION = {"txt" : "plain","html" :"html"}
@@ -179,5 +195,6 @@ def send_mail(receiver_emails, message):
 # print("done")
 # get_mail_content()
 # get_receiver_emails_manual()
-get_receiver_emails()
+# get_receiver_emails()
+bye()
 # print(show_checklist("test", ["op1","op2","op3","op4"]))
