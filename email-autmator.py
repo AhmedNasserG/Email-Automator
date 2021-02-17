@@ -18,11 +18,11 @@ from rich.console import Console
 from rich.panel import Panel
 
 # TODO: Update add emails method to add from file or manually (merge between them)
-# TODO: Add ctrl-c 
 # TODO: Add Auth method
 # TODO: Add Customizable emails
 # TODO: Handle if the file contains bad emails
 # TODO: Handle if the file contains duplicated emails
+# TODO: Fix remember me
 # TODO: Add other emailing services rather than gmail
 # TODO: Fix can't close the script when the menu is shown
 
@@ -56,7 +56,7 @@ def show_checklist(title, options):
 
 def get_credenalties():
     ''' get login credenalties '''
-    if not os.path.isfile(".credenalites"):
+    if not os.path.isfile(os.path.dirname(__file__)+"/.credenalites"):
         sender_email = input("Enter Sender Email : ")
         password = getpass.getpass(prompt="Enter Password : ")
         remember_me = Confirm.ask("Remember me ?")
@@ -64,7 +64,7 @@ def get_credenalties():
             with open(".credenalites", "w") as f:
                 f.write(sender_email+"\n"+password)
     else:
-        with open(".credenalites", "r") as f:
+        with open(os.path.dirname(__file__)+"/.credenalites", "r") as f:
             lines = f.readlines()
             sender_email = lines[0].strip()
             password = lines[1].strip()
@@ -206,4 +206,4 @@ def send_mail(receiver_emails, message):
 
 if __name__ == "__main__":
     signal(SIGINT, handler)
-    get_receiver_emails()
+    # get_receiver_emails()
