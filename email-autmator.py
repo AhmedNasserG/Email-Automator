@@ -2,6 +2,7 @@ import os
 import getpass
 import sys
 import csv
+from signal import signal, SIGINT
 
 import smtplib 
 # from email import encoders
@@ -17,7 +18,6 @@ from rich.console import Console
 from rich.panel import Panel
 
 # TODO: Update add emails method to add from file or manually (merge between them)
-# TODO: Add bye method
 # TODO: Add ctrl-c 
 # TODO: Add Auth method
 # TODO: Add Customizable emails
@@ -79,6 +79,11 @@ If you enjoy it, feel free to leave a [/bold][bold red]Star[/bold red]
 
 [italic cyan] Feedback and contribution is welcome as well :smiley:![/italic cyan]
         ''', title="Bye!"), justify="center")
+
+def handler(signal_received, frame):
+    print('\n[bold]SIGINT or CTRL-C detected. [red]Exiting gracefully[/red][/bold]')
+    bye()
+    exit(0)
 
 def get_mail_content():
     SUPPORTED_EXTENTSION = {"txt" : "plain","html" :"html"}
@@ -196,5 +201,9 @@ def send_mail(receiver_emails, message):
 # get_mail_content()
 # get_receiver_emails_manual()
 # get_receiver_emails()
-bye()
+# bye()
 # print(show_checklist("test", ["op1","op2","op3","op4"]))
+
+if __name__ == "__main__":
+    signal(SIGINT, handler)
+    get_receiver_emails()
